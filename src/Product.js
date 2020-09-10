@@ -1,7 +1,26 @@
 import React from 'react';
 import './Product.css';
+import { useStateValue } from './StateProvider';
 
-function Product({ title, image, price, rating }) {
+function Product({ id, title, image, price, rating }) {
+
+    const [{basket}, dispatch] = useStateValue();
+
+    console.log("This is the basket >>>", basket);
+    
+    const addToBasket = () => {
+        //dispatch the item into Data Layer
+        dispatch({
+            type: "ADD_TO_BASKET",
+            item: {
+                id,
+                title,
+                image,
+                price,
+                rating,
+            }
+        })
+    }
     return (
         <div className="product">
             <div className="product__info">
@@ -12,7 +31,7 @@ function Product({ title, image, price, rating }) {
                 </p>
                 <div className="product__rating">
                     {Array(rating).fill().map((_, i) => (
-                        <p>x</p>
+                        <p>🌟</p>
                     ))}
                     
                 </div>
@@ -20,7 +39,7 @@ function Product({ title, image, price, rating }) {
 
             <img src={image} alt="" />
 
-            <button className="product_button">Add to basket</button>
+            <button onClick={addToBasket}>Add to basket</button>
         </div>
     )
 }
